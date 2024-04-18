@@ -1,0 +1,13 @@
+Package: usutuFrance
+Type: Package
+Title: Epidemiology of Usutu in France in Summer 2018
+Version: 1.0
+Date: 2024-02-16
+Depends: R (>= 3.5.0)
+Suggests: knitr,lubridate,sf,viridis,splancs,stpp,spatstat.geom,spatstat.model,adehabitatHS,sp,ggplot2,ggspatial,MASS,gridBase,terra,tidyterra,ggpubr,dplyr,tidyr
+Author: Clement Calenge 
+Maintainer: Clement Calenge <clement.calenge@ofb.gouv.fr>
+Description: Code and data used in Bouchez-Zacria et al. (in prep.) to model the Usutu episode among birds in France in summer 2018.
+VignetteBuilder: knitr
+License: GPL (>= 2)
+NeedsCompilation: no
