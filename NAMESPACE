@@ -3,3 +3,7 @@
 
 # Export all names
 exportPattern(".")
+importFrom(mgcv,predict.gam)
+importFrom(stats,coef)
+importFrom(stats,vcov)
+importFrom(mgcv,rmvn)

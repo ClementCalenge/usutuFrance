@@ -1,9 +1,9 @@
 Package: usutuFrance
 Type: Package
 Title: Epidemiology of Usutu in France in Summer 2018
-Version: 1.0
+Version: 1.1
 Date: 2024-05-31
-Depends: R (>= 3.5.0)
+Depends: R (>= 3.5.0),mgcv
 Suggests: knitr,lubridate,sf,viridis,splancs,stpp,spatstat.geom,spatstat.model,adehabitatHS,sp,ggplot2,ggspatial,MASS,gridBase,terra,tidyterra,ggpubr,dplyr,tidyr,gratia
 Author: Clement Calenge 
 Maintainer: Clement Calenge <clement.calenge@ofb.gouv.fr>
