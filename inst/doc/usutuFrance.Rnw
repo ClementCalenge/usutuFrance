@@ -1,7 +1,7 @@
 \documentclass[a4paper]{article}
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{The Usutu episode of summer 2018 in birds in France}
-%\VignetteDepends{knitr,lubridate,ggplot2,sf,viridis,splancs,stpp,spatstat.geom,spatstat.model,adehabitatHS,sp,ggspatial,MASS,terra,tidyterra,ggpubr,dplyr,tidyr}
+%\VignetteDepends{knitr,lubridate,ggplot2,sf,viridis,splancs,stpp,spatstat.geom,spatstat.model,adehabitatHS,sp,ggspatial,MASS,terra,tidyterra,ggpubr,dplyr,tidyr,gratia}
 \usepackage{fancyvrb}
 \usepackage{color}
 \usepackage{url}
@@ -1014,6 +1014,7 @@ m_per <- bam(tot_MN ~  usutuF + s(year, k=10) +  s(year, by=usutuF, k=10) +
              data=merula, method="REML")
 
 ## Check the model fit
+library(gratia)
 appraise(m_per)
 ## Nothing worrying there
 

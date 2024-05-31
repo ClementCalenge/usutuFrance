@@ -559,6 +559,7 @@ merula$usutuF <- cu
 ##              data=merula, method="REML")
 ## 
 ## ## Check the model fit
+## library(gratia)
 ## appraise(m_per)
 ## ## Nothing worrying there
 ## 
