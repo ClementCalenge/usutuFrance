@@ -1,7 +1,7 @@
 \documentclass[a4paper]{article}
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{The Usutu episode of summer 2018 in birds in France}
-%\VignetteDepends{knitr,lubridate,ggplot2,sf,viridis,splancs,stpp,spatstat.geom,spatstat.model,adehabitatHS,sp,ggspatial,MASS,terra,tidyterra,ggpubr,dplyr,tidyr,gratia}
+%\VignetteDepends{knitr,lubridate,ggplot2,sf,viridis,splancs,stpp,spatstat.geom,spatstat.model,adehabitatHS,sp,ggspatial,MASS,terra,tidyterra,ggpubr,dplyr,tidyr}
 \usepackage{fancyvrb}
 \usepackage{color}
 \usepackage{url}
@@ -41,8 +41,7 @@
   summer 2018 in birds in France.}
 \author{Malika Bouchez-Zacria, Cl\'{e}ment Calenge, Alexandre Villers, \\Sylvie Lecollinet,
   Gaelle Gonzalez, Benoit Quintard, Antoine Leclerc, Florence
-  Baurier,\\ Marie-Claire Paty, Jean-Philippe Martinet, \\
-  \'{E}va Faure, Cyril \'{E}raud, Anouk Decors.}  \date{}
+  Baurier,\\ Marie-Claire Paty,  \'{E}va Faure, Cyril \'{E}raud, Anouk Decors.}  \date{}
 \setlength{\parindent}{0cm}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -823,8 +822,9 @@ points(usutup[,c("x","y")], pch=3, col="black", cex=1.5)
 da <- data.frame(date=seqPeriod,
                  NumberCases=movAvg)
 par(opar)
-plot(da$date, da$NumberCases, ty="l",xlab = "Date", ylab="Mean number of cases reported per day", main="(C)")
-plot.new()              ## suggested by @Josh
+plot(da$date, da$NumberCases, ty="l",xlab = "Date",
+     ylab="Mean number of cases reported per day", main="(C)")
+plot.new()              
 vps <- baseViewports()
 pushViewport(vps$figure) 
 vp1 <-plotViewport(c(1.8,1,3,1))
@@ -1014,8 +1014,7 @@ m_per <- bam(tot_MN ~  usutuF + s(year, k=10) +  s(year, by=usutuF, k=10) +
              data=merula, method="REML")
 
 ## Check the model fit
-library(gratia)
-appraise(m_per)
+gratia::appraise(m_per)
 ## Nothing worrying there
 
 ## Summary of the model

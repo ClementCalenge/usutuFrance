@@ -1,4 +1,4 @@
-## ----setup, include=FALSE, cache=FALSE--------------------
+## ----setup, include=FALSE, cache=FALSE----------------------------------------
 # set global chunk options
 library('knitr')
 opts_chunk$set(fig.path="usutuFrance-",
@@ -22,7 +22,7 @@ options(replace.assign=TRUE,width=60)
 set.seed(9567)
 
 
-## ----eval=FALSE-------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 ## ## If devtools is not yet installed, type
 ## install.packages("devtools")
 ## 
@@ -30,20 +30,20 @@ set.seed(9567)
 ## devtools::install_github("ClementCalenge/usutuFrance", ref="main")
 
 
-## ----load-package-----------------------------------------
+## ----load-package-------------------------------------------------------------
 library(usutuFrance)
 
 
-## ----load-usutu-data--------------------------------------
+## ----load-usutu-data----------------------------------------------------------
 data(usutu)
 str(usutu)
 
 
-## ----focus-positive---------------------------------------
+## ----focus-positive-----------------------------------------------------------
 usutup <- usutu[usutu$result=="Positive",]
 
 
-## ----first-plot-of-the-data-------------------------------
+## ----first-plot-of-the-data---------------------------------------------------
 ## Required libraries
 library(sf)
 library(ggplot2)
@@ -68,7 +68,7 @@ ggplot()+
     annotation_scale(location = "bl", width_hint = 0.5, plot_unit="m")
 
 
-## ----estimate-K-function----------------------------------
+## ----estimate-K-function------------------------------------------------------
 ## Distances for which the K function is desired (from 1 to 250 km)
 vs <- seq(1000, 250000, length=100)
 
@@ -87,17 +87,17 @@ kh <- splancs::khat(xy/1000, oo/1000, vs/1000)
 kh <- sqrt(kh/pi)-vs/1000
 
 
-## ----simulate-CSR-envelope, eval=FALSE--------------------
+## ----simulate-CSR-envelope, eval=FALSE----------------------------------------
 ## ## Calculation enveloppe by simulation of complete spatial randomness
 ## ## (min and max for different values of distances)
 ## simKcsr <- splancs::Kenv.csr(nrow(xy),oo/1000,999,vs/1000,quiet=TRUE)
 
 
-## ----load-result-simus------------------------------------
+## ----load-result-simus--------------------------------------------------------
 data(simKcsr)
 
 
-## ----plot-L-function--------------------------------------
+## ----plot-L-function----------------------------------------------------------
 ## transformation envelope of K into envelope of L
 simKcsr$lower <- sqrt(simKcsr$lower/pi)-vs/1000
 simKcsr$upper <- sqrt(simKcsr$upper/pi)-vs/1000
@@ -110,7 +110,7 @@ polygon(cbind(c(vs/1000, rev(vs/1000)),
 abline(h=0)
 
 
-## ----fit-thomas-process-raw-------------------------------
+## ----fit-thomas-process-raw---------------------------------------------------
 ## Define a point pattern (similarly, divide by 1000: it is clearer to
 ## work in kilometers).
 ppo <- spatstat.geom::ppp(xy[,1]/1000, xy[,2]/1000,
@@ -121,7 +121,7 @@ ppo <- spatstat.geom::ppp(xy[,1]/1000, xy[,2]/1000,
 ppro <- spatstat.model::kppm(ppo, ~1, "Thomas")
 
 
-## ----simulate-Thomas-1-envelope, eval=FALSE---------------
+## ----simulate-Thomas-1-envelope, eval=FALSE-----------------------------------
 ## simKraw <- sapply(1:999, function(r) {
 ##     cat(r,"\r")
 ##     s <- simulate(ppro,1)[[1]]
@@ -131,11 +131,11 @@ ppro <- spatstat.model::kppm(ppo, ~1, "Thomas")
 ## })
 
 
-## ----load-result-simus-1----------------------------------
+## ----load-result-simus-1------------------------------------------------------
 data(simKraw)
 
 
-## ----fit-Thomas-1-----------------------------------------
+## ----fit-Thomas-1-------------------------------------------------------------
 ## And show the fit with:
 rk <- t(apply(simKraw,1,function(x) range(x)))
 vsb <- vs/1000
@@ -151,7 +151,7 @@ polygon(c(vsb, rev(vsb)), c(rk[,1], rev(rk[,2])),
 lines(vsb, kh)
 
 
-## ---------------------------------------------------------
+## -----------------------------------------------------------------------------
 ## Removal of all points located at less than 5 km from another point
 ## Calculation of distance between points
 dp <- as.matrix(dist(xy))
@@ -176,7 +176,7 @@ sum(usutup$species[w]==usutup$species[w-1])
 usutup$species[w][usutup$species[w]==usutup$species[w-1]]
 
 
-## ----test-different-species-local-clustering--------------
+## ----test-different-species-local-clustering----------------------------------
 set.seed(777)
 
 ra <- sapply(1:999, function(r) {
@@ -190,18 +190,18 @@ ra <- sapply(1:999, function(r) {
 mean(ra<=4)
 
 
-## ----thinning---------------------------------------------
+## ----thinning-----------------------------------------------------------------
 xy_thin <- xy[!dup,]
 
 
-## ----K-thin-----------------------------------------------
+## ----K-thin-------------------------------------------------------------------
 kh_thin <- splancs::khat(xy_thin/1000, oo/1000, vs/1000)
 
 ## Function L
 kh_thin <- sqrt(kh_thin/pi)-vs/1000
 
 
-## ----fit-thomas-2-----------------------------------------
+## ----fit-thomas-2-------------------------------------------------------------
 ## Define a point pattern for the package spatstat (divide by 1000 to work on km)
 ppo_thin <- spatstat.geom::ppp(xy_thin[,1]/1000, xy_thin[,2]/1000,
                                window =
@@ -211,7 +211,7 @@ ppo_thin <- spatstat.geom::ppp(xy_thin[,1]/1000, xy_thin[,2]/1000,
 ppro_thin <- spatstat.model::kppm(ppo_thin, ~1, "Thomas")
 
 
-## ----simulate-Thomas-2-envelope, eval=FALSE---------------
+## ----simulate-Thomas-2-envelope, eval=FALSE-----------------------------------
 ## simKthin <- sapply(1:999, function(r) {
 ##     cat(r,"\r")
 ##     s <- simulate(ppro_thin,1)[[1]]
@@ -221,11 +221,11 @@ ppro_thin <- spatstat.model::kppm(ppo_thin, ~1, "Thomas")
 ## })
 
 
-## ----load-result-simus-2----------------------------------
+## ----load-result-simus-2------------------------------------------------------
 data(simKthin)
 
 
-## ----envelope-Thomas-2------------------------------------
+## ----envelope-Thomas-2--------------------------------------------------------
 ## And show the fit with:
 rk <- t(apply(simKthin,1,function(x) range(x)))
 vsb <- vs/1000
@@ -241,7 +241,7 @@ polygon(c(vsb, rev(vsb)), c(rk[,1], rev(rk[,2])),
 lines(vsb, kh_thin)
 
 
-## ----parameters-Thomas-Process----------------------------
+## ----parameters-Thomas-Process------------------------------------------------
 ## The log-density of clusters 
 co <- coef(summary(ppro_thin))
 
@@ -255,7 +255,7 @@ exp(co[c(1,3,4)])*10000
 ppro_thin
 
 
-## ----sd-distance-relationship-----------------------------
+## ----sd-distance-relationship-------------------------------------------------
 ## Simulation of 1000 points drawn from a bivariate Gaussian
 ## distribution with standard deviation equal to 77 km, and
 ## calculation of the mean distance between pairs of points.
@@ -280,12 +280,12 @@ contour(kd$x, kd$y,kd$z, add=TRUE, lwd=2, col="lightgrey", nlevels=4,
 title("Log-Human population density")
 
 
-## ----mean-env-variables-----------------------------------
+## ----mean-env-variables-------------------------------------------------------
 sppo <- sp::SpatialPoints(xy_thin, proj4string=sp::CRS(sp::proj4string(usutuEnvir)))
 (obs_means <- colMeans(sp::over(sppo, usutuEnvir)))
 
 
-## ----test-env-var, eval=FALSE-----------------------------
+## ----test-env-var, eval=FALSE-------------------------------------------------
 ## simEnv <- t(sapply(1:999, function(r) {
 ##     cat(r,"\r")
 ##     s <- simulate(ppro_thin,1)[[1]]
@@ -295,11 +295,11 @@ sppo <- sp::SpatialPoints(xy_thin, proj4string=sp::CRS(sp::proj4string(usutuEnvi
 ## }))
 
 
-## ----load-simEnv------------------------------------------
+## ----load-simEnv--------------------------------------------------------------
 data(simEnv)
 
 
-## ----comparison-obs-sim-----------------------------------
+## ----comparison-obs-sim-------------------------------------------------------
 ## Mean and standard error for the index of probability of wetlands
 c(mean(simEnv[,1]), sd(simEnv[,1]))
 ## Recall the observed mean:
@@ -311,11 +311,11 @@ c(mean(simEnv[,2]), sd(simEnv[,2]))
 obs_means[2]
 
 
-## ----biv-test---------------------------------------------
+## ----biv-test-----------------------------------------------------------------
 adehabitatHS::biv.test(as.data.frame(simEnv), obs_means)
 
 
-## ----time-series-plot-cases-------------------------------
+## ----time-series-plot-cases---------------------------------------------------
 library(lubridate)
 seqPeriod <- seq(ymd('2018-07-15'),ymd('2018-08-31'), by = '1 day')
 movAvg <- sapply(1:length(seqPeriod),  function(i) {
@@ -337,7 +337,7 @@ ggplot(da, aes(x=date,y=NumberCases))+geom_line()+xlab("Date")+
     ylab("Mean number of cases reported per day")
 
 
-## ----map-spatio-temporal----------------------------------
+## ----map-spatio-temporal------------------------------------------------------
 theme_set(theme_bw())
 labd <- pretty(usutup$date)
 ggplot()+
@@ -359,7 +359,7 @@ ggplot()+
     annotation_scale(location = "bl", width_hint = 0.5, plot_unit="m")
 
 
-## ----stikhat-function-------------------------------------
+## ----stikhat-function---------------------------------------------------------
 ## get define space-time points
 po <- stpp::as.3dpoints(usutup$x/1000,usutup$y/1000,
                         as.numeric(usutup$date-min(usutup$date)))
@@ -379,7 +379,7 @@ ch <- stpp::STIKhat(po, s.region = oo/1000,
                     times=vt, dist=vs/1000, infectious=TRUE)
 
 
-## ----simus-stikhat, eval=FALSE----------------------------
+## ----simus-stikhat, eval=FALSE------------------------------------------------
 ## ## Randomization test: WARNING! THIS PART IS VERY SLOW
 ## si <- list()
 ## 
@@ -406,11 +406,11 @@ ch <- stpp::STIKhat(po, s.region = oo/1000,
 ## }
 
 
-## ----load-dataset-----------------------------------------
+## ----load-dataset-------------------------------------------------------------
 data(KstFun)
 
 
-## ----plot-stikhat-----------------------------------------
+## ----plot-stikhat-------------------------------------------------------------
 ## Show the results:
 dok <- data.frame(duration=rep(vt,length(vs)),
                   distance=rep(vs/1000,each=length(vt)),
@@ -425,7 +425,7 @@ ggplot2::ggplot(dok, ggplot2::aes(x=duration, y=distance))+
 
 
 
-## ----synthesis-figure-------------------------------------
+## ----synthesis-figure---------------------------------------------------------
 ##png(filename="SynthesisFigure.png", width=1000, height=1000, pointsize=20)
 library(gridBase)
 library(grid)
@@ -449,8 +449,9 @@ points(usutup[,c("x","y")], pch=3, col="black", cex=1.5)
 da <- data.frame(date=seqPeriod,
                  NumberCases=movAvg)
 par(opar)
-plot(da$date, da$NumberCases, ty="l",xlab = "Date", ylab="Mean number of cases reported per day", main="(C)")
-plot.new()              ## suggested by @Josh
+plot(da$date, da$NumberCases, ty="l",xlab = "Date",
+     ylab="Mean number of cases reported per day", main="(C)")
+plot.new()              
 vps <- baseViewports()
 pushViewport(vps$figure) 
 vp1 <-plotViewport(c(1.8,1,3,1))
@@ -466,7 +467,7 @@ print(p,vp = vp1)
 ##dev.off()
 
 
-## ----convert-to-spatRaster--------------------------------
+## ----convert-to-spatRaster----------------------------------------------------
 ## Load the package terra
 library(terra)
 
@@ -492,25 +493,25 @@ r1 <- rr*r1
 image(r1)
 
 
-## ----location-of-points-and-routes-ACT--------------------
+## ----location-of-points-and-routes-ACT----------------------------------------
 data(resop)
 head(resop)
 
 plot(resop[,c("x","y")], asp=1)
 
 
-## ----calculate-usutu-density------------------------------
+## ----calculate-usutu-density--------------------------------------------------
 resop$usutu<-terra::extract(r1, as.matrix(resop[,c("x", "y")]))[,1]
 
 
-## ----average-usutu-values-per-route-----------------------
+## ----average-usutu-values-per-route-------------------------------------------
 val_agg <- resop  |>  dplyr::group_by(cd_route) |> 
 dplyr::summarise(usutu_agg=mean(usutu, na.rm=T),
                  x=mean(x), y=mean(y))
 head(val_agg)
 
 
-## ----limits-density-usuv----------------------------------
+## ----limits-density-usuv------------------------------------------------------
 
 ## Median
 usutu_med <- median(val_agg$usutu_agg)
@@ -526,12 +527,12 @@ val_agg$usutuF <- factor(val_agg$usutuF, levels=c("low", "medium", "high"))
 head(val_agg)
 
 
-## ----load-merula------------------------------------------
+## ----load-merula--------------------------------------------------------------
 data(merula)
 head(merula)
 
 
-## ----merula-join-usutu------------------------------------
+## ----merula-join-usutu--------------------------------------------------------
 ## Join with the density map
 ex2 <- terra::extract(r1, as.matrix(merula[,c("x","y")]))
 
@@ -548,7 +549,7 @@ merula$usutuF <- cu
 
 
 
-## ----GAMM-fit, eval=FALSE---------------------------------
+## ----GAMM-fit, eval=FALSE-----------------------------------------------------
 ## ## Load the package mgcv
 ## library(mgcv)
 ## 
@@ -559,8 +560,7 @@ merula$usutuF <- cu
 ##              data=merula, method="REML")
 ## 
 ## ## Check the model fit
-## library(gratia)
-## appraise(m_per)
+## gratia::appraise(m_per)
 ## ## Nothing worrying there
 ## 
 ## ## Summary of the model
@@ -580,12 +580,12 @@ merula$usutuF <- cu
 ##                                 factor_name="usutuF", nreplicates=1000)
 
 
-## ----load-simus-prediction--------------------------------
+## ----load-simus-prediction----------------------------------------------------
 data(simu_by_regions)
 str(simu_by_regions)
 
 
-## ----simus-better-layout----------------------------------
+## ----simus-better-layout------------------------------------------------------
 #convert to a data frame from which to average values per relevant time periods
 df_4analyses<- do.call("rbind", simu_by_regions) |> as.data.frame() |> 
 dplyr::mutate(usutuF=rep(levels(merula$usutuF), each=1000),
@@ -597,7 +597,7 @@ dplyr::mutate_at( 'year', as.numeric)
 head(df_4analyses)
 
 
-## ----calculate-trends-------------------------------------
+## ----calculate-trends---------------------------------------------------------
 ## A data frame where abundance is averaged by simulation,
 ## by period (before after the 2018 Usutu episode) and
 ## by areas of Usutu "prevalence" (usutuF)
@@ -620,7 +620,7 @@ as.data.frame()
 head(df_trends)
 
 
-## ----mean-trend-with-ci-----------------------------------
+## ----mean-trend-with-ci-------------------------------------------------------
 ## Low level of infection:
 dl <- df_trends[df_trends$usutuF=="low",]
 trl <- 100*(dl[,4]-dl[,3])/dl[,3]
@@ -646,7 +646,7 @@ rownames(res_trends)<-NULL
 res_trends
 
 
-## ----final-summary-plot-----------------------------------
+## ----final-summary-plot-------------------------------------------------------
 
 ## format the data.frame df_4trends for an easier handling
 df_stat_abund<-df_4trends  |> 

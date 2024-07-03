@@ -3,7 +3,5 @@
 
 # Export all names
 exportPattern(".")
-importFrom(mgcv,predict.gam)
-importFrom(stats,coef)
-importFrom(stats,vcov)
-importFrom(mgcv,rmvn)
+importFrom("stats", "coef", "vcov")
+importFrom("mgcv", "predict.gam", "rmvn")
